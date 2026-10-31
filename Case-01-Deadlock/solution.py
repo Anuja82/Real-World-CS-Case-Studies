@@ -1,0 +1,27 @@
+import threading
+import time
+resource1=threading.Lock()
+resource2=threading.Lock()
+def process1():
+    print("Process 1:Acquiring Resource 1")
+    resource1.acquire()
+    print("Process 1:Resource 1 acquired")
+    time.sleep(1)
+    print("Process 1:Waiting for resource 2")
+    resource2.acquire()
+    print("Process 1:Resource 2 acquired")
+def process2():
+    print("Process 2:Acquiring Resource 2")
+    resource2.acquire()
+    print("Process 2:Resource 2 acquired")
+    time.sleep(1)
+    print("Process 2:Waiting for Resource 1")
+    resource1.acquire()
+    print("Process 2:Resource 1 acquired")
+t1=threading.Thread(target=process1)
+t2=threading.Thread(target=process2)
+t1.start()
+t2.start()
+t1.join()
+t2.join()
+print("Both processes completed")
